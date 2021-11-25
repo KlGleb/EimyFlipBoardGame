@@ -1,19 +1,22 @@
 package at.gleb.composetest
 
 import android.os.Bundle
+import android.view.Gravity
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -33,24 +36,41 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeTestTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    Field()
+                    Column {
+                        Area()
+                        Field()
+                    }
                 }
             }
         }
 
     }
 
+    @Composable
+    fun Area() {
+        val state = viewModel.areaLiveData.observeAsState()
+        val stateRemember = remember { state }
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(text = "Biggest Rectangle: ${stateRemember.value}")
+        }
+    }
+
     @Preview
     @Composable
     fun Field() {
-        val state = viewModel.fieldState.observeAsState()
-        val s = remember { state }
+        val state = viewModel.fieldLiveData.observeAsState()
+        val stateRemember = remember { state }
 
         Canvas(modifier = Modifier
             .fillMaxSize()
             .pointerInput(Unit) {
                 detectTapGestures {
-                    s.value?.run {
+                    stateRemember.value?.run {
                         val x = (it.x / (canvasWidth / size)).toInt()
                         val y = (it.y / (canvasWidth / this[0].size)).toInt()
                         viewModel.clickOn(x, y)
@@ -58,9 +78,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         ) {
-
-
-            s.value?.let {
+            stateRemember.value?.let {
                 canvasWidth = size.width
                 val rectSize = size.width / it.size
 

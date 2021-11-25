@@ -1,4 +1,4 @@
-package at.gleb.composetest.ui
+package at.gleb.composetest
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

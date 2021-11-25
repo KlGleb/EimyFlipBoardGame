@@ -1,7 +1,6 @@
 package at.gleb.composetest
 
 import android.os.Bundle
-import android.view.Gravity
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -16,14 +15,12 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import at.gleb.composetest.ui.MainViewModel
 import at.gleb.composetest.ui.theme.ComposeTestTheme
 
 class MainActivity : ComponentActivity() {
@@ -66,6 +63,7 @@ class MainActivity : ComponentActivity() {
         val state = viewModel.fieldLiveData.observeAsState()
         val stateRemember = remember { state }
 
+        //Just draw the field on the canvass
         Canvas(modifier = Modifier
             .fillMaxSize()
             .pointerInput(Unit) {
